@@ -1,0 +1,926 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#090b09">
+<title>VYRO ATHLETICS — Built Beyond Limits</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800;900&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --bg:#090b09;
+  --surface:#111411;
+  --surface2:#171b16;
+  --lime:#c6ff35;
+  --white:#f3f4ee;
+  --muted:#92988d;
+  --line:rgba(255,255,255,.10);
+  --display:'Barlow Condensed',sans-serif;
+  --body:'DM Sans',sans-serif;
+}
+
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:90px}
+body{
+  background:var(--bg);
+  color:var(--white);
+  font-family:var(--body);
+  overflow-x:hidden;
+}
+body.menu-open{overflow:hidden}
+a{text-decoration:none;color:inherit}
+button{font:inherit}
+img{display:block;width:100%;height:100%;object-fit:cover}
+::selection{background:var(--lime);color:#090b09}
+
+.cursor{
+  position:fixed;
+  width:18px;height:18px;
+  background:var(--lime);
+  border-radius:50%;
+  pointer-events:none;
+  z-index:9999;
+  transform:translate(-50%,-50%);
+  transition:width .25s,height .25s,opacity .25s;
+  mix-blend-mode:difference;
+}
+.cursor.large{
+  width:42px;
+  height:42px;
+  opacity:.85;
+}
+
+.noise{
+  position:fixed;inset:0;z-index:50;
+  pointer-events:none;opacity:.025;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.8'/%3E%3C/svg%3E");
+}
+
+.preloader{
+  position:fixed;inset:0;z-index:10000;
+  background:var(--bg);
+  display:grid;place-items:center;
+  transition:transform .9s cubic-bezier(.77,0,.18,1);
+}
+.preloader.hide{transform:translateY(-100%)}
+.preloader-inner{text-align:center}
+.preloader-logo{
+  font:900 clamp(55px,12vw,110px)/.85 var(--display);
+  letter-spacing:-3px;
+}
+.preloader-logo span{color:var(--lime)}
+.preloader-line{
+  width:180px;height:2px;background:#252a22;
+  margin:25px auto 0;overflow:hidden;
+}
+.preloader-line:after{
+  content:"";display:block;width:100%;height:100%;
+  background:var(--lime);
+  transform:translateX(-100%);
+  animation:loading 1.2s ease forwards;
+}
+@keyframes loading{to{transform:translateX(0)}}
+
+.announcement{
+  min-height:34px;
+  display:flex;align-items:center;justify-content:center;
+  background:var(--lime);color:#10130c;
+  font-size:9px;font-weight:800;
+  letter-spacing:2.3px;text-transform:uppercase;
+  padding:8px 15px;text-align:center;
+}
+
+header{
+  height:82px;
+  position:sticky;top:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 7%;
+  background:rgba(9,11,9,.88);
+  border-bottom:1px solid var(--line);
+  backdrop-filter:blur(18px);
+}
+.logo{
+  font:900 35px/.9 var(--display);
+  letter-spacing:-1.5px;
+}
+.logo span{color:var(--lime)}
+.logo small{
+  display:block;font:700 8px var(--body);
+  letter-spacing:4px;color:var(--muted);
+  margin-top:5px;
+}
+nav{display:flex;align-items:center;gap:37px}
+nav a{
+  font-size:10px;font-weight:700;
+  text-transform:uppercase;letter-spacing:1.5px;
+  color:#c3c8bd;transition:color .3s;
+  position:relative;
+}
+nav a:after{
+  content:"";position:absolute;left:0;bottom:-8px;
+  height:1px;width:0;background:var(--lime);
+  transition:width .3s;
+}
+nav a:hover{color:var(--lime)}
+nav a:hover:after{width:100%}
+.header-right{display:flex;align-items:center;gap:20px}
+.header-cta{
+  padding:13px 20px;background:var(--lime);
+  color:#10130c;font-size:10px;font-weight:800;
+  letter-spacing:1px;text-transform:uppercase;
+  transition:background .3s,transform .3s;
+}
+.header-cta:hover{background:white;transform:translateY(-3px)}
+.menu-toggle{
+  display:none;background:none;border:0;
+  color:white;font-size:25px;cursor:pointer;
+}
+
+.hero{
+  min-height:calc(100vh - 116px);
+  position:relative;display:flex;align-items:center;
+  overflow:hidden;padding:90px 7%;
+}
+.hero-image{
+  position:absolute;inset:0;
+  background:
+    linear-gradient(90deg,rgba(5,7,5,.96) 0%,rgba(5,7,5,.77) 39%,rgba(5,7,5,.1) 100%),
+    linear-gradient(0deg,rgba(5,7,5,.72),transparent 35%),
+    url("https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=2200&q=90") center 43%/cover;
+  transform:scale(1.06);
+  animation:heroZoom 2s ease forwards;
+}
+@keyframes heroZoom{to{transform:scale(1)}}
+.hero-content{position:relative;z-index:2;max-width:750px}
+.eyebrow{
+  display:flex;align-items:center;gap:12px;
+  color:var(--lime);font-size:10px;
+  font-weight:800;letter-spacing:3px;
+  text-transform:uppercase;
+}
+.eyebrow:before{content:"";width:30px;height:1px;background:var(--lime)}
+.hero h1{
+  font:900 clamp(76px,12vw,160px)/.78 var(--display);
+  letter-spacing:-3px;text-transform:uppercase;
+  margin:30px 0;
+}
+.hero h1 span{
+  color:transparent;
+  -webkit-text-stroke:1.5px var(--white);
+}
+.hero-copy{
+  max-width:410px;color:#b8beb4;
+  font-size:13px;line-height:1.9;
+}
+.hero-actions{display:flex;gap:14px;margin-top:35px;flex-wrap:wrap}
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;
+  gap:18px;padding:17px 24px;
+  background:var(--lime);color:#10130c;
+  font-size:10px;font-weight:800;
+  letter-spacing:1.3px;text-transform:uppercase;
+  border:1px solid var(--lime);
+  transition:transform .35s,background .35s,color .35s;
+}
+.btn:hover{transform:translateY(-5px);background:white;border-color:white}
+.btn-outline{background:transparent;color:white;border-color:rgba(255,255,255,.4)}
+.btn-outline:hover{background:var(--lime);color:#10130c;border-color:var(--lime)}
+.btn .arrow{font-size:17px;transition:transform .3s}
+.btn:hover .arrow{transform:translateX(5px)}
+.hero-bottom{
+  position:absolute;bottom:35px;left:7%;right:7%;
+  display:flex;justify-content:space-between;align-items:center;
+  color:#b5b9b0;font-size:9px;letter-spacing:2px;
+  text-transform:uppercase;z-index:2;
+}
+.hero-scroll{display:flex;align-items:center;gap:12px}
+.hero-scroll:before{content:"";width:35px;height:1px;background:var(--lime)}
+.hero-index{color:var(--lime)}
+
+.ticker{
+  overflow:hidden;background:var(--lime);color:#10130c;
+  padding:17px 0;
+}
+.ticker-track{
+  display:flex;width:max-content;
+  animation:ticker 28s linear infinite;
+}
+.ticker:hover .ticker-track{animation-play-state:paused}
+.ticker-item{
+  font:800 24px var(--display);
+  letter-spacing:1px;text-transform:uppercase;
+  padding:0 25px;white-space:nowrap;
+}
+.ticker-item span{padding-left:45px}
+@keyframes ticker{to{transform:translateX(-50%)}}
+
+.section{padding:125px 7%}
+.section-head{
+  display:flex;justify-content:space-between;
+  align-items:flex-end;gap:30px;margin-bottom:55px;
+}
+.section-kicker{
+  color:var(--lime);font-size:10px;font-weight:800;
+  letter-spacing:3px;text-transform:uppercase;margin-bottom:17px;
+}
+.section-title{
+  font:800 clamp(48px,7vw,88px)/.88 var(--display);
+  text-transform:uppercase;letter-spacing:-1px;
+}
+.section-title span{color:var(--lime)}
+.section-description{
+  color:var(--muted);font-size:12px;
+  line-height:1.9;max-width:330px;
+}
+
+.collections{background:#0c0f0c}
+.collection-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:17px;
+}
+.collection-card{
+  position:relative;height:480px;overflow:hidden;
+  background:var(--surface);isolation:isolate;
+}
+.collection-card:after{
+  content:"";position:absolute;inset:0;z-index:0;
+  background:linear-gradient(0deg,rgba(0,0,0,.85),transparent 65%);
+}
+.collection-card img{
+  transition:transform 1s cubic-bezier(.2,.7,.2,1);
+}
+.collection-card:hover img{transform:scale(1.09)}
+.collection-content{
+  position:absolute;z-index:1;bottom:28px;left:27px;right:27px;
+}
+.collection-number{
+  color:var(--lime);font-size:9px;
+  letter-spacing:2px;font-weight:800;
+}
+.collection-content h3{
+  font:800 43px/.9 var(--display);
+  text-transform:uppercase;margin:12px 0;
+}
+.collection-content p{
+  font-size:10px;color:#c4c8c0;letter-spacing:1px;
+}
+.collection-link{
+  position:absolute;right:27px;bottom:30px;
+  width:40px;height:40px;border-radius:50%;
+  background:var(--lime);color:#111;
+  display:grid;place-items:center;font-size:19px;
+  transition:transform .35s,background .35s;
+}
+.collection-card:hover .collection-link{transform:rotate(45deg);background:white}
+
+.products{background:var(--bg)}
+.product-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:17px}
+.product-card{min-width:0}
+.product-image{
+  position:relative;height:360px;
+  overflow:hidden;background:var(--surface2);
+}
+.product-image img{transition:transform .8s}
+.product-card:hover .product-image img{transform:scale(1.07)}
+.product-tag{
+  position:absolute;top:15px;left:15px;
+  background:var(--lime);color:#10130c;
+  font-size:8px;font-weight:800;letter-spacing:1px;
+  padding:8px 10px;text-transform:uppercase;
+}
+.product-info{padding:18px 2px}
+.product-info h3{
+  font:700 25px var(--display);
+  text-transform:uppercase;letter-spacing:.3px;
+}
+.product-info p{color:var(--muted);font-size:10px;margin-top:5px}
+.product-bottom{
+  display:flex;justify-content:space-between;
+  align-items:center;margin-top:16px;
+}
+.product-price{font-size:12px;font-weight:800}
+.product-add{
+  border:1px solid var(--line);background:transparent;
+  color:var(--lime);width:34px;height:34px;
+  cursor:pointer;font-size:19px;
+  transition:background .3s,color .3s,border-color .3s;
+}
+.product-add:hover{background:var(--lime);color:#111;border-color:var(--lime)}
+.demo-note{
+  margin-top:25px;color:#737b70;
+  font-size:9px;letter-spacing:1px;line-height:1.7;
+}
+
+.campaign{
+  min-height:650px;position:relative;
+  display:flex;align-items:center;
+  padding:100px 7%;overflow:hidden;
+}
+.campaign-bg{
+  position:absolute;inset:0;
+  background:
+    linear-gradient(90deg,rgba(7,9,7,.96),rgba(7,9,7,.55) 55%,rgba(7,9,7,.2)),
+    url("https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&w=2000&q=90") center/cover;
+}
+.campaign-content{position:relative;max-width:650px}
+.campaign h2{
+  font:900 clamp(70px,11vw,140px)/.76 var(--display);
+  text-transform:uppercase;margin:30px 0;
+}
+.campaign h2 span{color:var(--lime)}
+.campaign p{
+  color:#c2c8bd;font-size:13px;
+  line-height:1.9;max-width:390px;margin-bottom:30px;
+}
+
+.manifesto{
+  display:grid;grid-template-columns:1fr 1fr;
+  background:var(--lime);color:#10130c;
+  min-height:450px;
+}
+.manifesto-left{
+  padding:90px 10% 90px 14%;
+  display:flex;flex-direction:column;justify-content:center;
+}
+.manifesto-left .section-kicker{color:#34421b}
+.manifesto h2{
+  font:900 clamp(55px,8vw,100px)/.82 var(--display);
+  text-transform:uppercase;letter-spacing:-2px;
+}
+.manifesto-right{
+  padding:90px 12% 90px 7%;
+  display:flex;flex-direction:column;justify-content:center;
+  border-left:1px solid rgba(0,0,0,.18);
+}
+.manifesto-right p{font-size:14px;line-height:2;color:#29321c}
+.manifesto-stats{
+  display:flex;gap:45px;margin-top:35px;
+}
+.manifesto-stat strong{
+  display:block;font:800 40px var(--display);
+}
+.manifesto-stat span{
+  font-size:9px;font-weight:800;
+  letter-spacing:1px;text-transform:uppercase;
+}
+
+.community{padding:120px 7%;background:#0c0f0c}
+.community-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:70px;
+  align-items:center;
+}
+.community-image{
+  height:540px;overflow:hidden;position:relative;
+}
+.community-image img{transition:transform 1s}
+.community-image:hover img{transform:scale(1.05)}
+.community-copy h2{
+  font:900 clamp(55px,7vw,90px)/.85 var(--display);
+  text-transform:uppercase;margin:25px 0;
+}
+.community-copy h2 span{color:var(--lime)}
+.community-copy p{
+  color:var(--muted);font-size:13px;line-height:2;
+  max-width:420px;margin-bottom:30px;
+}
+
+.newsletter{
+  padding:100px 7%;text-align:center;
+  background:var(--surface);
+}
+.newsletter h2{
+  font:900 clamp(55px,8vw,95px)/.85 var(--display);
+  text-transform:uppercase;margin:20px 0;
+}
+.newsletter h2 span{color:var(--lime)}
+.newsletter p{
+  color:var(--muted);font-size:12px;
+  line-height:1.8;max-width:400px;margin:20px auto 30px;
+}
+.newsletter-form{
+  display:flex;max-width:470px;margin:auto;
+  border-bottom:1px solid rgba(255,255,255,.35);
+}
+.newsletter-form input{
+  flex:1;min-width:0;background:transparent;
+  border:0;outline:0;color:white;padding:16px 5px;
+  font:12px var(--body);
+}
+.newsletter-form input::placeholder{color:#82897e}
+.newsletter-form button{
+  border:0;background:var(--lime);color:#111;
+  padding:0 22px;font-size:10px;font-weight:800;
+  letter-spacing:1px;text-transform:uppercase;cursor:pointer;
+  transition:background .3s;
+}
+.newsletter-form button:hover{background:white}
+.form-message{font-size:10px;color:var(--lime);margin-top:15px;min-height:16px}
+
+footer{padding:75px 7% 25px;background:#070907}
+.footer-main{
+  display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;
+  gap:45px;padding-bottom:65px;
+}
+.footer-brand p{
+  color:var(--muted);font-size:11px;
+  line-height:1.9;max-width:270px;margin-top:20px;
+}
+.footer-column h4{
+  color:var(--lime);font-size:9px;
+  letter-spacing:2px;text-transform:uppercase;margin-bottom:22px;
+}
+.footer-column a{
+  display:block;color:#aeb4a9;font-size:11px;
+  margin:13px 0;transition:color .3s;
+}
+.footer-column a:hover{color:var(--lime)}
+.footer-bottom{
+  border-top:1px solid var(--line);
+  padding-top:22px;display:flex;justify-content:space-between;
+  gap:20px;color:#7e857a;font-size:9px;
+  letter-spacing:1px;text-transform:uppercase;
+}
+.footer-bottom span:first-child{color:var(--lime)}
+
+.reveal{
+  opacity:0;transform:translateY(35px);
+  transition:opacity .9s ease,transform .9s ease;
+}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.delay-1{transition-delay:.12s}
+.delay-2{transition-delay:.24s}
+
+@media(max-width:1050px){
+  header{padding:0 5%}
+  .hero,.section,.campaign,.community,.newsletter,footer{padding-left:5%;padding-right:5%}
+  .product-grid{grid-template-columns:repeat(2,1fr);row-gap:35px}
+  .product-image{height:420px}
+  .collection-card{height:400px}
+}
+@media(max-width:760px){
+  .cursor{display:none}
+  header{height:70px;padding:0 6%}
+  .logo{font-size:30px}
+  .menu-toggle{display:block}
+  .header-cta{display:none}
+  nav{
+    position:fixed;top:70px;left:0;right:0;bottom:0;
+    background:#090b09;display:flex;flex-direction:column;
+    justify-content:center;gap:32px;
+    transform:translateX(100%);transition:transform .45s;
+  }
+  nav.open{transform:translateX(0)}
+  nav a{font-size:20px;letter-spacing:2px}
+  .hero{min-height:760px;padding:100px 6%}
+  .hero-image{
+    background:
+      linear-gradient(90deg,rgba(5,7,5,.88),rgba(5,7,5,.35)),
+      linear-gradient(0deg,rgba(5,7,5,.8),transparent 60%),
+      url("https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=1200&q=85") center/cover;
+  }
+  .hero h1{font-size:clamp(78px,17vw,125px)}
+  .hero-bottom{left:6%;right:6%;font-size:8px}
+  .section{padding-top:90px;padding-bottom:90px}
+  .section-head{display:block;margin-bottom:35px}
+  .section-description{margin-top:20px}
+  .collection-grid{grid-template-columns:1fr}
+  .collection-card{height:470px}
+  .product-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:25px 12px}
+  .product-image{height:260px}
+  .product-info h3{font-size:22px}
+  .campaign{min-height:570px;padding-top:90px;padding-bottom:90px}
+  .manifesto{grid-template-columns:1fr}
+  .manifesto-left{padding:75px 8% 35px}
+  .manifesto-right{padding:30px 8% 75px;border-left:0}
+  .community{padding-top:85px;padding-bottom:85px}
+  .community-grid{grid-template-columns:1fr;gap:40px}
+  .community-image{height:430px}
+  .footer-main{grid-template-columns:1fr 1fr;gap:40px 25px}
+  .footer-brand{grid-column:1/-1}
+  .footer-bottom{flex-direction:column;gap:12px}
+}
+@media(max-width:420px){
+  .hero h1{font-size:75px}
+  .product-image{height:220px}
+  .product-info h3{font-size:20px}
+  .product-info p{font-size:9px}
+  .collection-card{height:410px}
+  .manifesto-stats{gap:25px}
+  .newsletter-form button{padding:0 13px}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*:before,*:after{
+    scroll-behavior:auto!important;
+    animation-duration:.01ms!important;
+    transition-duration:.01ms!important;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="preloader" id="preloader">
+  <div class="preloader-inner">
+    <div class="preloader-logo">VYR<span>O</span></div>
+    <div class="preloader-line"></div>
+  </div>
+</div>
+
+<div class="cursor" id="cursor"></div>
+<div class="noise"></div>
+
+<div class="announcement">
+  PERFORMANCE IS A MINDSET — BUILT BEYOND LIMITS
+</div>
+
+<header>
+  <a href="#home" class="logo">
+    VYR<span>O</span>
+    <small>ATHLETICS</small>
+  </a>
+
+  <nav id="nav">
+    <a href="#home">Home</a>
+    <a href="#collections">Collections</a>
+    <a href="#products">Shop</a>
+    <a href="#story">Our Story</a>
+    <a href="#community">Community</a>
+  </nav>
+
+  <div class="header-right">
+    <a href="#products" class="header-cta">Explore Gear ↗</a>
+    <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation">☰</button>
+  </div>
+</header>
+
+<main>
+
+<section class="hero" id="home">
+  <div class="hero-image"></div>
+
+  <div class="hero-content">
+    <div class="eyebrow">Engineered for the relentless</div>
+    <h1>BUILT<br><span>BEYOND</span><br>LIMITS.</h1>
+    <p class="hero-copy">
+      Performance isn't given. It's earned. Discover athletic essentials
+      designed to move with you, challenge you and keep you going.
+    </p>
+    <div class="hero-actions">
+      <a href="#collections" class="btn">Explore collection <span class="arrow">↗</span></a>
+      <a href="#story" class="btn btn-outline">Discover VYRO</a>
+    </div>
+  </div>
+
+  <div class="hero-bottom">
+    <span class="hero-index">01 / 04 — THE PERFORMANCE ERA</span>
+    <span class="hero-scroll">Scroll to explore</span>
+  </div>
+</section>
+
+<div class="ticker">
+  <div class="ticker-track">
+    <div class="ticker-item">NO EXCUSES <span>✳</span></div>
+    <div class="ticker-item">NO LIMITS <span>✳</span></div>
+    <div class="ticker-item">ALL IN <span>✳</span></div>
+    <div class="ticker-item">MOVE DIFFERENT <span>✳</span></div>
+    <div class="ticker-item">NO EXCUSES <span>✳</span></div>
+    <div class="ticker-item">NO LIMITS <span>✳</span></div>
+    <div class="ticker-item">ALL IN <span>✳</span></div>
+    <div class="ticker-item">MOVE DIFFERENT <span>✳</span></div>
+  </div>
+</div>
+
+<section class="section collections" id="collections">
+  <div class="section-head reveal">
+    <div>
+      <div class="section-kicker">01 — Find your movement</div>
+      <h2 class="section-title">GEAR UP.<br><span>GO FURTHER.</span></h2>
+    </div>
+    <p class="section-description">
+      Different disciplines. One mindset. Explore performance-inspired
+      collections made for every version of your ambition.
+    </p>
+  </div>
+
+  <div class="collection-grid">
+    <a href="#products" class="collection-card reveal">
+      <img src="https://images.unsplash.com/photo-1538805060514-97d9cc17730c?auto=format&fit=crop&w=900&q=85" alt="Athlete running outdoors" loading="lazy">
+      <div class="collection-content">
+        <div class="collection-number">COLLECTION 001</div>
+        <h3>RUN<br>THE DAY.</h3>
+        <p>RUNNING ESSENTIALS</p>
+      </div>
+      <div class="collection-link">↗</div>
+    </a>
+
+    <a href="#products" class="collection-card reveal delay-1">
+      <img src="https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?auto=format&fit=crop&w=900&q=85" alt="Strength training athlete" loading="lazy">
+      <div class="collection-content">
+        <div class="collection-number">COLLECTION 002</div>
+        <h3>BUILT<br>TO LIFT.</h3>
+        <p>STRENGTH COLLECTION</p>
+      </div>
+      <div class="collection-link">↗</div>
+    </a>
+
+    <a href="#products" class="collection-card reveal delay-2">
+      <img src="https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&w=900&q=85" alt="Athlete stretching" loading="lazy">
+      <div class="collection-content">
+        <div class="collection-number">COLLECTION 003</div>
+        <h3>FIND<br>YOUR FLOW.</h3>
+        <p>EVERYDAY MOVEMENT</p>
+      </div>
+      <div class="collection-link">↗</div>
+    </a>
+  </div>
+</section>
+
+<section class="section products" id="products">
+  <div class="section-head reveal">
+    <div>
+      <div class="section-kicker">02 — The essentials</div>
+      <h2 class="section-title">THE <span>VYRO</span><br>EDIT.</h2>
+    </div>
+    <p class="section-description">
+      A concept collection built around comfort, movement and a
+      no-compromise approach to performance.
+    </p>
+  </div>
+
+  <div class="product-grid">
+
+    <article class="product-card reveal">
+      <div class="product-image">
+        <img src="https://images.unsplash.com/photo-1551028719-00167b16eac5?auto=format&fit=crop&w=700&q=85" alt="Performance sportswear jacket" loading="lazy">
+        <span class="product-tag">FEATURED</span>
+      </div>
+      <div class="product-info">
+        <h3>VYRO Motion Jacket</h3>
+        <p>Lightweight performance layer</p>
+        <div class="product-bottom">
+          <span class="product-price">₹2,499</span>
+          <button class="product-add" aria-label="View product concept" data-product="VYRO Motion Jacket">↗</button>
+        </div>
+      </div>
+    </article>
+
+    <article class="product-card reveal delay-1">
+      <div class="product-image">
+<img src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=700&q=85" alt="Core Training Tee" loading="lazy">
+        <span class="product-tag">NEW EDIT</span>
+      </div>
+      <div class="product-info">
+        <h3>Core Training Tee</h3>
+        <p>Everyday training essential</p>
+        <div class="product-bottom">
+          <span class="product-price">₹999</span>
+          <button class="product-add" aria-label="View product concept" data-product="Core Training Tee">↗</button>
+        </div>
+      </div>
+    </article>
+
+    <article class="product-card reveal delay-1">
+      <div class="product-image">
+        <img src="https://images.unsplash.com/photo-1552346154-21d32810aba3?auto=format&fit=crop&w=700&q=85" alt="Athletic footwear" loading="lazy">
+        <span class="product-tag">VYRO SELECT</span>
+      </div>
+      <div class="product-info">
+        <h3>Velocity Runner</h3>
+        <p>Performance-inspired footwear</p>
+        <div class="product-bottom">
+          <span class="product-price">₹3,499</span>
+          <button class="product-add" aria-label="View product concept" data-product="Velocity Runner">↗</button>
+        </div>
+      </div>
+    </article>
+
+    <article class="product-card reveal delay-2">
+      <div class="product-image">
+        <img src="https://images.unsplash.com/photo-1584466977773-e625c37cdd50?auto=format&fit=crop&w=700&q=85" alt="Training accessories" loading="lazy">
+        <span class="product-tag">ESSENTIAL</span>
+      </div>
+      <div class="product-info">
+        <h3>Everyday Training Bag</h3>
+        <p>Made for movement</p>
+        <div class="product-bottom">
+          <span class="product-price">₹1,799</span>
+          <button class="product-add" aria-label="View product concept" data-product="Everyday Training Bag">↗</button>
+        </div>
+      </div>
+    </article>
+
+  </div>
+
+  <p class="demo-note">
+    CONCEPT PORTFOLIO DISPLAY — PRODUCT NAMES, PRICES AND IMAGERY ARE ILLUSTRATIVE.
+    THIS IS NOT A LIVE STORE OR CHECKOUT.
+  </p>
+</section>
+
+<section class="campaign">
+  <div class="campaign-bg"></div>
+  <div class="campaign-content reveal">
+    <div class="eyebrow">03 — The mindset</div>
+    <h2>DON'T<br>WAIT.<br><span>DOMINATE.</span></h2>
+    <p>
+      The strongest competition is the one within.
+      Show up, put in the work and make every session count.
+    </p>
+    <a href="#community" class="btn">Join the movement <span class="arrow">↗</span></a>
+  </div>
+</section>
+
+<section class="manifesto" id="story">
+  <div class="manifesto-left reveal">
+    <div class="section-kicker">04 — The VYRO mindset</div>
+    <h2>MADE<br>FOR THE<br>DRIVEN.</h2>
+  </div>
+  <div class="manifesto-right reveal delay-1">
+    <p>
+      VYRO is a sportswear brand concept built around one belief:
+      progress belongs to those who keep moving.
+      We believe in purposeful design, everyday discipline and the
+      confidence to push beyond yesterday.
+      <br><br>
+      No shortcuts. No noise. Just movement.
+    </p>
+    <div class="manifesto-stats">
+      <div class="manifesto-stat">
+        <strong>01</strong>
+        <span>One mindset</span>
+      </div>
+      <div class="manifesto-stat">
+        <strong>∞</strong>
+        <span>No limits</span>
+      </div>
+      <div class="manifesto-stat">
+        <strong>100%</strong>
+        <span>Commitment</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="community" id="community">
+  <div class="community-grid">
+    <div class="community-image reveal">
+      <img src="https://images.unsplash.com/photo-1534258936925-c58bed479fcb?auto=format&fit=crop&w=1100&q=85" alt="Athlete training in a gym" loading="lazy">
+    </div>
+    <div class="community-copy reveal delay-1">
+      <div class="section-kicker">05 — More than apparel</div>
+      <h2>MOVE<br><span>YOUR</span><br>WAY.</h2>
+      <p>
+        Every athlete has a different starting point.
+        Every journey has its own pace.
+        Find your reason, own your progress and keep moving forward.
+      </p>
+      <a href="#newsletter" class="btn">Stay in the loop <span class="arrow">↗</span></a>
+    </div>
+  </div>
+</section>
+
+<section class="newsletter" id="newsletter">
+  <div class="section-kicker">06 — Stay connected</div>
+  <h2>THE NEXT<br><span>MOVE.</span></h2>
+  <p>
+    Get a first look at future collection concepts, campaign updates
+    and the VYRO world.
+  </p>
+
+  <form class="newsletter-form" id="newsletterForm">
+    <input type="email" placeholder="Your email address" aria-label="Email address" required>
+    <button type="submit">Sign up ↗</button>
+  </form>
+  <div class="form-message" id="formMessage" aria-live="polite"></div>
+</section>
+
+</main>
+
+<footer>
+  <div class="footer-main">
+    <div class="footer-brand">
+      <a href="#home" class="logo">VYR<span>O</span><small>ATHLETICS</small></a>
+      <p>
+        Built beyond limits. A performance sportswear concept
+        for those who choose to keep moving.
+      </p>
+    </div>
+
+    <div class="footer-column">
+      <h4>Explore</h4>
+      <a href="#home">Home</a>
+      <a href="#collections">Collections</a>
+      <a href="#products">Shop concept</a>
+      <a href="#story">Our story</a>
+    </div>
+
+    <div class="footer-column">
+      <h4>Discover</h4>
+      <a href="#community">Community</a>
+      <a href="#newsletter">Updates</a>
+      <a href="#story">Our mindset</a>
+    </div>
+
+    <div class="footer-column">
+      <h4>Connect</h4>
+      <a href="#newsletter">Get in touch</a>
+      <a href="#home">Instagram ↗</a>
+      <a href="#home">Pinterest ↗</a>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <span>© 2026 VYRO ATHLETICS</span>
+    <span>BUILT BEYOND LIMITS.</span>
+    <span>CONCEPT WEBSITE BY NEXORA 3D</span>
+  </div>
+</footer>
+
+<script>
+/* PRELOADER */
+window.addEventListener("load",()=>{
+  setTimeout(()=>{
+    document.getElementById("preloader").classList.add("hide");
+  },900);
+});
+
+/* CUSTOM CURSOR */
+const cursor=document.getElementById("cursor");
+
+if(window.matchMedia("(pointer:fine)").matches){
+  document.addEventListener("mousemove",e=>{
+    cursor.style.left=e.clientX+"px";
+    cursor.style.top=e.clientY+"px";
+  });
+
+  document.querySelectorAll("a,button").forEach(el=>{
+    el.addEventListener("mouseenter",()=>cursor.classList.add("large"));
+    el.addEventListener("mouseleave",()=>cursor.classList.remove("large"));
+  });
+}
+
+/* MOBILE NAVIGATION */
+const menuToggle=document.getElementById("menuToggle");
+const nav=document.getElementById("nav");
+
+menuToggle.addEventListener("click",()=>{
+  nav.classList.toggle("open");
+  document.body.classList.toggle("menu-open");
+  menuToggle.textContent=nav.classList.contains("open")?"✕":"☰";
+});
+
+nav.querySelectorAll("a").forEach(link=>{
+  link.addEventListener("click",()=>{
+    nav.classList.remove("open");
+    document.body.classList.remove("menu-open");
+    menuToggle.textContent="☰";
+  });
+});
+
+/* SCROLL REVEAL */
+const observer=new IntersectionObserver(entries=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting){
+      entry.target.classList.add("visible");
+      observer.unobserve(entry.target);
+    }
+  });
+},{threshold:.12});
+
+document.querySelectorAll(".reveal").forEach(el=>observer.observe(el));
+
+/* PRODUCT CONCEPT BUTTONS */
+document.querySelectorAll(".product-add").forEach(button=>{
+  button.addEventListener("click",()=>{
+    const product=button.dataset.product;
+    alert(product+" — This is a portfolio concept. Online purchasing is not enabled.");
+  });
+});
+
+/* DEMO NEWSLETTER FORM */
+document.getElementById("newsletterForm").addEventListener("submit",e=>{
+  e.preventDefault();
+  document.getElementById("formMessage").textContent=
+    "Thanks for your interest! This is a demo form and no information has been sent or stored.";
+  e.target.reset();
+});
+
+/* SMOOTH ANCHOR SCROLL */
+document.querySelectorAll('a[href^="#"]').forEach(link=>{
+  link.addEventListener("click",e=>{
+    const target=document.querySelector(link.getAttribute("href"));
+    if(target){
+      e.preventDefault();
+      target.scrollIntoView({behavior:"smooth"});
+    }
+  });
+});
+</script>
+
+</body>
+</html>
