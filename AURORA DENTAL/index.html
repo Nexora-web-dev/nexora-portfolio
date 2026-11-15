@@ -1,0 +1,623 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#f4f0e8">
+<title>AURORA — The Art of a Beautiful Smile</title>
+<meta name="description" content="A considered approach to modern dentistry. Discover the AURORA dental experience.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --cream:#f4f0e8;
+  --ivory:#fbf9f4;
+  --gold:#b99a68;
+  --gold-light:#d9c49d;
+  --dark:#292821;
+  --muted:#858174;
+  --line:rgba(83,72,52,.16);
+}
+
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--ivory);color:var(--dark);font-family:"DM Sans",sans-serif;overflow-x:hidden}
+a{text-decoration:none;color:inherit}
+button,input,select,textarea{font:inherit}
+
+.preloader{
+  position:fixed;inset:0;background:var(--cream);z-index:9999;
+  display:grid;place-items:center;transition:opacity .8s,visibility .8s
+}
+.preloader.hide{opacity:0;visibility:hidden}
+.preloader-inner{text-align:center}
+.preloader-inner span{
+  font-family:"Playfair Display",serif;font-size:54px;color:var(--gold)
+}
+.preloader-inner p{font-size:9px;letter-spacing:5px;margin-top:12px;color:var(--muted)}
+
+.cursor,.cursor-ring{
+  position:fixed;pointer-events:none;border-radius:50%;z-index:9998;
+  transform:translate(-50%,-50%)
+}
+.cursor{width:7px;height:7px;background:var(--gold)}
+.cursor-ring{width:35px;height:35px;border:1px solid rgba(185,154,104,.5);transition:width .3s,height .3s}
+
+.header{
+  height:92px;padding:0 7%;display:flex;align-items:center;
+  justify-content:space-between;position:fixed;top:0;width:100%;
+  z-index:100;transition:.4s;border-bottom:1px solid transparent
+}
+.header.scrolled{
+  height:75px;background:rgba(251,249,244,.91);
+  backdrop-filter:blur(18px);border-color:var(--line)
+}
+.logo{
+  font-family:"Playfair Display",serif;font-size:27px;
+  letter-spacing:2px;color:var(--dark)
+}
+.logo span{color:var(--gold)}
+.logo small{
+  display:block;font-family:"DM Sans",sans-serif;font-size:8px;
+  letter-spacing:4px;color:var(--muted);text-align:center;margin-top:2px
+}
+.nav{display:flex;align-items:center;gap:37px}
+.nav a{font-size:10px;letter-spacing:1px;color:#625e54;transition:.3s}
+.nav a:hover{color:var(--gold)}
+.nav .nav-cta{
+  padding:14px 21px;border:1px solid var(--gold);color:var(--dark)
+}
+.nav .nav-cta:hover{background:var(--gold);color:white}
+.menu-toggle{
+  display:none;background:none;border:0;font-size:25px;color:var(--dark)
+}
+
+.hero{
+  min-height:100vh;display:grid;grid-template-columns:1fr 1fr;
+  align-items:center;padding:145px 7% 70px;gap:65px;position:relative
+}
+.hero-content{position:relative;z-index:2}
+.eyebrow{
+  display:flex;align-items:center;gap:12px;
+  font-size:9px;letter-spacing:4px;color:var(--gold);margin-bottom:28px
+}
+.eyebrow span{width:30px;height:1px;background:var(--gold)}
+.hero h1{
+  font-family:"Playfair Display",serif;font-size:clamp(52px,6vw,84px);
+  font-weight:400;line-height:1.1;letter-spacing:-2px
+}
+.hero h1 em{color:var(--gold);font-weight:400}
+.hero-description{
+  max-width:430px;color:var(--muted);font-size:13px;
+  line-height:2;margin-top:27px
+}
+.hero-actions{display:flex;align-items:center;gap:30px;margin-top:35px}
+.button{
+  display:inline-flex;align-items:center;gap:24px;padding:17px 23px;
+  background:var(--dark);color:white;font-size:10px;letter-spacing:1px;
+  transition:transform .35s,background .35s
+}
+.button:hover{transform:translateY(-4px);background:var(--gold)}
+.text-link{font-size:10px;letter-spacing:1px;color:var(--dark)}
+.text-link span{color:var(--gold);margin-left:7px}
+.hero-meta{
+  display:flex;gap:28px;margin-top:75px;padding-top:20px;
+  border-top:1px solid var(--line);font-size:8px;letter-spacing:2px;color:var(--muted)
+}
+
+.hero-visual{position:relative;min-height:560px;display:grid;place-items:center}
+.hero-photo{
+  position:absolute;inset:25px 10px 25px 50px;overflow:hidden
+}
+.hero-photo img{width:100%;height:100%;object-fit:cover;filter:saturate(.65)}
+.hero-photo::after{
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(0deg,rgba(40,34,23,.22),transparent 60%)
+}
+.hero-frame{
+  position:absolute;inset:0;border:1px solid var(--gold);
+  transform:translate(17px,17px);pointer-events:none
+}
+.hero-caption{
+  position:absolute;bottom:42px;left:25px;z-index:2;
+  color:white;font-size:9px;letter-spacing:3px
+}
+.hero-caption span{display:block;font-family:"Playfair Display",serif;font-size:25px;letter-spacing:0;margin-top:8px}
+.hero-stamp{
+  position:absolute;top:10px;left:0;width:115px;height:115px;
+  border:1px solid var(--gold);border-radius:50%;display:grid;
+  place-items:center;background:var(--ivory);z-index:3;
+  color:var(--gold);font-family:"Playfair Display",serif;
+  font-size:29px;text-align:center;line-height:1.1
+}
+.hero-stamp small{display:block;font-family:"DM Sans",sans-serif;font-size:7px;letter-spacing:2px}
+
+.intro-strip{
+  padding:26px 7%;display:flex;align-items:center;justify-content:center;
+  gap:38px;background:var(--cream);color:var(--muted);
+  font-size:9px;letter-spacing:3px;flex-wrap:wrap
+}
+.intro-strip span{color:var(--gold);font-size:16px}
+
+.section{padding:125px 7%}
+.section-label{font-size:9px;letter-spacing:4px;color:var(--gold);margin-bottom:27px}
+.philosophy-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:75px;align-items:end}
+.philosophy h2,.section-heading h2{
+  font-family:"Playfair Display",serif;font-size:clamp(42px,5vw,68px);
+  font-weight:400;line-height:1.16;letter-spacing:-1px
+}
+.philosophy h2 em,.section-heading h2 em{color:var(--gold);font-weight:400}
+.philosophy-copy{max-width:420px;color:var(--muted);font-size:13px;line-height:2}
+.philosophy-copy .text-link{display:inline-block;margin-top:25px}
+.values-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:25px;margin-top:90px}
+.value-card{padding:30px 25px;border-top:1px solid var(--gold-light);transition:background .4s,transform .4s}
+.value-card:hover{background:var(--cream);transform:translateY(-7px)}
+.value-card>span{font-size:9px;letter-spacing:2px;color:var(--gold)}
+.value-icon{font-family:"Playfair Display",serif;font-size:34px;color:var(--gold);margin-top:30px}
+.value-card h3{font-family:"Playfair Display",serif;font-size:23px;font-weight:400;margin-top:20px}
+.value-card p{font-size:11px;line-height:1.8;color:var(--muted);margin-top:12px}
+
+.treatments{background:var(--cream)}
+.section-heading{
+  display:flex;justify-content:space-between;align-items:end;gap:40px;margin-bottom:60px
+}
+.section-heading>p{max-width:320px;color:var(--muted);font-size:12px;line-height:1.9}
+.treatment-grid{display:grid;grid-template-columns:1fr 1fr;gap:35px}
+.treatment-card{overflow:hidden}
+.treatment-image{
+  height:300px;position:relative;display:grid;place-items:center;
+  overflow:hidden;background:#e4dac9;transition:filter .5s
+}
+.treatment-image img{width:100%;height:100%;object-fit:cover;transition:transform .8s}
+.treatment-card:hover .treatment-image img{transform:scale(1.06)}
+.treatment-image span{
+  position:absolute;top:20px;left:22px;z-index:2;
+  font-size:9px;letter-spacing:3px;color:white
+}
+.treatment-info{display:flex;justify-content:space-between;align-items:center;padding:23px 0}
+.treatment-info h3{font-family:"Playfair Display",serif;font-size:24px;font-weight:400}
+.treatment-info p{font-size:10px;color:var(--muted);margin-top:8px}
+.treatment-info>span{font-size:23px;color:var(--gold);transition:transform .3s}
+.treatment-card:hover .treatment-info>span{transform:translate(5px,-5px)}
+
+.experience{padding:100px 7%}
+.experience-panel{
+  min-height:480px;display:grid;grid-template-columns:1fr 1fr;
+  align-items:center;position:relative;overflow:hidden;
+  background:#2c2a23;color:white;padding:70px 8%
+}
+.experience-panel::after{
+  content:"";position:absolute;right:-120px;top:-160px;
+  width:570px;height:570px;border:1px solid rgba(217,196,157,.22);
+  border-radius:50%;box-shadow:0 0 0 45px rgba(217,196,157,.035),0 0 0 90px rgba(217,196,157,.025)
+}
+.experience-content{position:relative;z-index:2}
+.experience-content h2{
+  font-family:"Playfair Display",serif;font-size:clamp(42px,5vw,65px);
+  font-weight:400;line-height:1.15;margin-top:20px
+}
+.experience-content h2 em{color:var(--gold-light);font-weight:400}
+.experience-content p{max-width:390px;color:#b8b4a8;font-size:12px;line-height:2;margin-top:20px}
+.experience-content .button{margin-top:30px;background:var(--gold);color:#fff}
+.experience-mark{
+  position:relative;z-index:2;text-align:center;
+  font-family:"Playfair Display",serif;font-size:200px;color:rgba(217,196,157,.65)
+}
+.experience-mark span{color:white}
+
+.doctor-grid{display:grid;grid-template-columns:1fr 1fr;gap:35px}
+.doctor-image{height:420px;overflow:hidden;background:#e3d9ca}
+.doctor-image img{width:100%;height:100%;object-fit:cover;transition:transform .8s}
+.doctor-card:hover img{transform:scale(1.04)}
+.doctor-card h3{font-family:"Playfair Display",serif;font-size:25px;font-weight:400;margin-top:23px}
+.doctor-card p{font-size:8px;letter-spacing:2px;color:var(--gold);margin-top:9px}
+.demo-note{font-size:9px;color:var(--muted);margin-top:22px;line-height:1.8}
+
+.appointment{background:var(--cream)}
+.appointment-grid{display:grid;grid-template-columns:1fr 1fr;gap:100px}
+.appointment-copy h2{
+  font-family:"Playfair Display",serif;font-size:clamp(42px,5vw,65px);
+  font-weight:400;line-height:1.16
+}
+.appointment-copy h2 em{color:var(--gold)}
+.appointment-copy>p{max-width:390px;color:var(--muted);font-size:12px;line-height:2;margin-top:22px}
+.appointment-detail{display:flex;align-items:center;gap:17px;margin-top:45px}
+.appointment-detail>span{font-size:26px;color:var(--gold)}
+.appointment-detail b{display:block;font-family:"Playfair Display",serif;font-size:17px;font-weight:400}
+.appointment-detail small{display:block;color:var(--muted);font-size:10px;margin-top:5px}
+.appointment-form{display:flex;flex-direction:column;gap:12px}
+.appointment-form label{font-size:8px;letter-spacing:2px;color:var(--muted);margin-top:12px}
+.appointment-form input,.appointment-form select,.appointment-form textarea{
+  border:0;border-bottom:1px solid var(--line);background:transparent;
+  padding:13px 0;outline:none;color:var(--dark);font-size:12px;width:100%
+}
+.appointment-form input:focus,.appointment-form select:focus,.appointment-form textarea:focus{border-color:var(--gold)}
+.appointment-form textarea{resize:vertical}
+.appointment-form .button{border:0;cursor:pointer;align-self:flex-start;margin-top:20px}
+.form-success{font-size:11px;color:#667448;line-height:1.7}
+
+.final-cta{
+  text-align:center;padding:125px 7%;background:#292821;color:white
+}
+.final-cta>p{font-size:9px;letter-spacing:4px;color:var(--gold-light)}
+.final-cta h2{
+  font-family:"Playfair Display",serif;font-size:clamp(43px,6vw,78px);
+  font-weight:400;line-height:1.15;margin:28px 0
+}
+.final-cta h2 em{color:var(--gold-light)}
+.final-cta .button{background:var(--gold);color:white}
+
+.footer{padding:45px 7% 25px;background:#211f1a;color:white}
+.footer-main{display:flex;align-items:center;justify-content:space-between;padding-bottom:40px}
+.footer .logo{color:white}
+.footer-main>p{font-size:8px;letter-spacing:3px;color:#aaa497}
+.back-top{font-size:9px;letter-spacing:2px;color:var(--gold-light)}
+.footer-bottom{
+  display:flex;justify-content:space-between;gap:20px;
+  padding-top:22px;border-top:1px solid rgba(255,255,255,.15);
+  color:#999488;font-size:8px;letter-spacing:2px
+}
+.floating-contact{
+  position:fixed;bottom:25px;right:25px;width:48px;height:48px;
+  display:grid;place-items:center;background:var(--gold);color:white;
+  border-radius:50%;z-index:90;box-shadow:0 7px 25px rgba(0,0,0,.15);
+  transition:transform .3s
+}
+.floating-contact:hover{transform:translateY(-5px) rotate(45deg)}
+
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .9s,transform .9s}
+.reveal.visible{opacity:1;transform:translateY(0)}
+
+@media(max-width:850px){
+  .header{padding:0 5%}
+  .nav{gap:20px}
+  .hero{gap:35px;padding-left:5%;padding-right:5%}
+  .hero-visual{min-height:450px}
+  .section{padding:95px 5%}
+  .appointment-grid{gap:50px}
+  .experience{padding:70px 5%}
+}
+@media(max-width:650px){
+  body{cursor:auto}
+  .cursor,.cursor-ring{display:none}
+  .header{height:75px;padding:0 6%}
+  .menu-toggle{display:block}
+  .nav{
+    position:absolute;top:74px;left:0;width:100%;display:none;
+    flex-direction:column;align-items:flex-start;padding:28px 7%;
+    background:var(--ivory);border-bottom:1px solid var(--line)
+  }
+  .nav.open{display:flex}
+  .nav a{font-size:12px}
+  .hero{grid-template-columns:1fr;padding:135px 6% 55px;gap:45px}
+  .hero h1{font-size:58px}
+  .hero-visual{min-height:390px}
+  .hero-photo{inset:15px 10px 15px 25px}
+  .hero-meta{margin-top:45px;flex-wrap:wrap}
+  .intro-strip{gap:14px;font-size:8px}
+  .section{padding:85px 6%}
+  .philosophy-grid{grid-template-columns:1fr;gap:25px}
+  .values-grid{grid-template-columns:1fr;gap:15px;margin-top:55px}
+  .section-heading{display:block}
+  .section-heading>p{margin-top:18px}
+  .treatment-grid{grid-template-columns:1fr;gap:20px}
+  .treatment-image{height:260px}
+  .experience{padding:55px 6%}
+  .experience-panel{grid-template-columns:1fr;padding:50px 8%;min-height:450px}
+  .experience-mark{position:absolute;right:0;bottom:-50px;font-size:150px;opacity:.35}
+  .doctor-grid{grid-template-columns:1fr;gap:35px}
+  .doctor-image{height:350px}
+  .appointment-grid{grid-template-columns:1fr;gap:45px}
+  .final-cta{padding:90px 6%}
+  .footer-main{align-items:flex-start;flex-direction:column;gap:24px}
+  .footer-bottom{flex-direction:column}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{scroll-behavior:auto!important;transition-duration:.01ms!important}
+}
+</style>
+</head>
+
+<body>
+
+<div class="preloader" id="preloader">
+  <div class="preloader-inner">
+    <span>A.</span>
+    <p>THE AURORA EXPERIENCE</p>
+  </div>
+</div>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<header class="header" id="header">
+  <a href="#" class="logo">AURORA<span>.</span><small>DENTAL STUDIO</small></a>
+  <nav class="nav" id="nav">
+    <a href="#philosophy">Philosophy</a>
+    <a href="#treatments">Treatments</a>
+    <a href="#doctors">Our Doctors</a>
+    <a href="#appointment" class="nav-cta">Book a Visit ↗</a>
+  </nav>
+  <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">☰</button>
+</header>
+
+<main>
+
+<section class="hero">
+  <div class="hero-content reveal">
+    <div class="eyebrow"><span></span> A NEW STANDARD IN DENTAL CARE</div>
+    <h1>Where science<br>meets the <em>art</em><br>of your smile.</h1>
+    <p class="hero-description">
+      A considered approach to modern dentistry. Thoughtful care,
+      refined spaces and an experience designed around you.
+    </p>
+    <div class="hero-actions">
+      <a href="#appointment" class="button">Discover Your Visit <span>↗</span></a>
+      <a href="#philosophy" class="text-link">Explore AURORA ↓</a>
+    </div>
+    <div class="hero-meta">
+      <span>01 — 04</span>
+      <span>PRECISION · COMFORT · CONFIDENCE</span>
+    </div>
+  </div>
+
+  <div class="hero-visual reveal">
+    <div class="hero-photo">
+      <img src="https://images.unsplash.com/photo-1629909613654-28e377c37b09?w=1100&q=85" alt="Contemporary dental clinic interior">
+    </div>
+    <div class="hero-frame"></div>
+    <div class="hero-stamp">A.<small>EST. IN CARE</small></div>
+    <div class="hero-caption">A NEW PERSPECTIVE ON DENTISTRY<span>Designed around you.</span></div>
+  </div>
+</section>
+
+<div class="intro-strip">
+  <p>CARE, WITH A DIFFERENT PERSPECTIVE</p><span>✳</span>
+  <p>DESIGNED AROUND YOU</p><span>✳</span>
+  <p>MADE TO FEEL DIFFERENT</p>
+</div>
+
+<section class="philosophy section" id="philosophy">
+  <div class="section-label reveal">01 — OUR PHILOSOPHY</div>
+  <div class="philosophy-grid">
+    <h2 class="reveal">Not just dentistry.<br><em>A better experience.</em></h2>
+    <div class="philosophy-copy reveal">
+      <p>We believe exceptional dental care begins with listening. Every detail of the AURORA experience is considered — from the first conversation to the finishing touch.</p>
+      <a href="#treatments" class="text-link">Discover our approach <span>↗</span></a>
+    </div>
+  </div>
+  <div class="values-grid">
+    <article class="value-card reveal">
+      <span>01</span><div class="value-icon">✳</div>
+      <h3>Thoughtful Care</h3>
+      <p>Personalised attention and clear communication at every step.</p>
+    </article>
+    <article class="value-card reveal">
+      <span>02</span><div class="value-icon">◇</div>
+      <h3>Modern Precision</h3>
+      <p>Contemporary techniques with careful attention to detail.</p>
+    </article>
+    <article class="value-card reveal">
+      <span>03</span><div class="value-icon">○</div>
+      <h3>Quiet Comfort</h3>
+      <p>A calm, welcoming environment designed to put you at ease.</p>
+    </article>
+  </div>
+</section>
+
+<section class="treatments section" id="treatments">
+  <div class="section-label reveal">02 — WHAT WE DO</div>
+  <div class="section-heading">
+    <h2 class="reveal">Care that goes<br><em>beyond the ordinary.</em></h2>
+    <p class="reveal">A considered selection of dental services, tailored to your needs.</p>
+  </div>
+
+  <div class="treatment-grid">
+    <article class="treatment-card reveal">
+      <div class="treatment-image">
+        <span>01</span>
+        <img src="https://images.unsplash.com/photo-1606811971618-4486d14f3f99?w=900&q=85" alt="Dental consultation">
+      </div>
+      <div class="treatment-info"><div><h3>Smile Design</h3><p>Thoughtful aesthetic planning for your smile.</p></div><span>↗</span></div>
+    </article>
+    <article class="treatment-card reveal">
+      <div class="treatment-image">
+        <span>02</span>
+        <img src="https://images.unsplash.com/photo-1609840114035-3c981b782dfe?w=900&q=85" alt="Dental care">
+      </div>
+      <div class="treatment-info"><div><h3>Teeth Alignment</h3><p>Modern orthodontic care and guidance.</p></div><span>↗</span></div>
+    </article>
+    <article class="treatment-card reveal">
+      <div class="treatment-image">
+        <span>03</span>
+        <img src="https://images.unsplash.com/photo-1606811841689-23dfddce3e95?w=900&q=85" alt="Dental clinic">
+      </div>
+      <div class="treatment-info"><div><h3>General Dentistry</h3><p>Everyday care for long-term oral health.</p></div><span>↗</span></div>
+    </article>
+    <article class="treatment-card reveal">
+      <div class="treatment-image">
+        <span>04</span>
+        <img src="https://images.unsplash.com/photo-1606811971618-4486d14f3f99?w=900&q=85" alt="Dental treatment">
+      </div>
+      <div class="treatment-info"><div><h3>Dental Implants</h3><p>Restorative options planned around you.</p></div><span>↗</span></div>
+    </article>
+  </div>
+  <p class="demo-note">Concept website: treatment availability and suitability must be confirmed by the clinic.</p>
+</section>
+
+<section class="experience">
+  <div class="experience-panel reveal">
+    <div class="experience-content">
+      <div class="section-label">03 — THE AURORA DIFFERENCE</div>
+      <h2>A space to feel<br><em>at ease.</em></h2>
+      <p>From considered interiors to a welcoming team, every part of the experience is designed to make your visit feel more comfortable.</p>
+      <a href="#appointment" class="button">Plan Your Visit <span>↗</span></a>
+    </div>
+    <div class="experience-mark">A<span>.</span></div>
+  </div>
+</section>
+
+<section class="doctors section" id="doctors">
+  <div class="section-label reveal">04 — THE PEOPLE BEHIND THE CARE</div>
+  <div class="section-heading">
+    <h2 class="reveal">Meet your <em>care team.</em></h2>
+    <p class="reveal">Friendly faces. Thoughtful conversations. Care built around people.</p>
+  </div>
+  <div class="doctor-grid">
+    <article class="doctor-card reveal">
+      <div class="doctor-image">
+        <img src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=800&q=85" alt="Portrait placeholder for a dentist">
+      </div>
+      <h3>Dr. Aanya Mehta</h3>
+      <p>CONCEPT PROFILE — FICTIONAL DOCTOR</p>
+    </article>
+    <article class="doctor-card reveal">
+      <div class="doctor-image">
+        <img src="https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=800&q=85" alt="Portrait placeholder for a dentist">
+      </div>
+      <h3>Dr. Rohan Kapoor</h3>
+      <p>CONCEPT PROFILE — FICTIONAL DOCTOR</p>
+    </article>
+  </div>
+  <p class="demo-note">Doctor names and profiles are fictional placeholders for this demonstration.</p>
+</section>
+
+<section class="appointment section" id="appointment">
+  <div class="appointment-grid">
+    <div class="appointment-copy reveal">
+      <div class="section-label">05 — BEGIN YOUR EXPERIENCE</div>
+      <h2>Your next chapter<br>starts with a <em>conversation.</em></h2>
+      <p>Have a question or want to arrange a visit? Send a request and our team can follow up.</p>
+      <div class="appointment-detail">
+        <span>✳</span>
+        <div><b>A thoughtful first step</b><small>Share a few details about your enquiry.</small></div>
+      </div>
+    </div>
+
+    <form class="appointment-form reveal" id="bookingForm">
+      <label for="name">YOUR NAME</label>
+      <input id="name" name="name" type="text" placeholder="Full name" required>
+
+      <label for="email">EMAIL ADDRESS</label>
+      <input id="email" name="email" type="email" placeholder="you@example.com" required>
+
+      <label for="service">WHAT CAN WE HELP WITH?</label>
+      <select id="service" name="service" required>
+        <option value="">Select a service</option>
+        <option>Smile Design</option>
+        <option>Teeth Alignment</option>
+        <option>General Dentistry</option>
+        <option>Dental Implants</option>
+        <option>General Enquiry</option>
+      </select>
+
+      <label for="message">ANYTHING ELSE? (OPTIONAL)</label>
+      <textarea id="message" name="message" rows="3" placeholder="Tell us a little about your enquiry"></textarea>
+
+      <button type="submit" class="button">Send Enquiry <span>↗</span></button>
+      <p class="form-success" id="formSuccess" hidden>Thank you. This is a demonstration form; your details have not been sent to a clinic.</p>
+      <p class="demo-note">Demonstration only — this form does not transmit or store personal information.</p>
+    </form>
+  </div>
+</section>
+
+<section class="final-cta">
+  <p class="reveal">AURORA DENTAL STUDIO</p>
+  <h2 class="reveal">A more considered<br><em>kind of care.</em></h2>
+  <a href="#appointment" class="button reveal">Start a Conversation <span>↗</span></a>
+</section>
+
+</main>
+
+<footer class="footer">
+  <div class="footer-main">
+    <a href="#" class="logo">AURORA<span>.</span><small>DENTAL STUDIO</small></a>
+    <p>THE ART OF A BEAUTIFUL SMILE.</p>
+    <a href="#home" class="back-top">BACK TO TOP ↑</a>
+  </div>
+  <div class="footer-bottom">
+    <span>© <span id="year"></span> AURORA DENTAL — CONCEPT DEMO</span>
+    <span>DESIGNED WITH INTENTION.</span>
+  </div>
+</footer>
+
+<a href="#appointment" class="floating-contact" aria-label="Contact AURORA">↗</a>
+
+<script>
+const preloader=document.getElementById("preloader");
+
+window.addEventListener("load",()=>{
+  setTimeout(()=>preloader.classList.add("hide"),400);
+});
+
+setTimeout(()=>preloader.classList.add("hide"),3000);
+
+const header=document.getElementById("header");
+window.addEventListener("scroll",()=>{
+  header.classList.toggle("scrolled",window.scrollY>40);
+});
+
+const menuToggle=document.getElementById("menuToggle");
+const nav=document.getElementById("nav");
+
+menuToggle.addEventListener("click",()=>{
+  nav.classList.toggle("open");
+  menuToggle.textContent=nav.classList.contains("open")?"×":"☰";
+});
+
+nav.querySelectorAll("a").forEach(link=>{
+  link.addEventListener("click",()=>{
+    nav.classList.remove("open");
+    menuToggle.textContent="☰";
+  });
+});
+
+const observer=new IntersectionObserver(entries=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting){
+      entry.target.classList.add("visible");
+      observer.unobserve(entry.target);
+    }
+  });
+},{threshold:.12});
+
+document.querySelectorAll(".reveal").forEach(element=>observer.observe(element));
+
+const cursor=document.getElementById("cursor");
+const cursorRing=document.getElementById("cursorRing");
+
+if(window.matchMedia("(pointer:fine)").matches){
+  window.addEventListener("mousemove",event=>{
+    cursor.style.left=event.clientX+"px";
+    cursor.style.top=event.clientY+"px";
+    cursorRing.style.left=event.clientX+"px";
+    cursorRing.style.top=event.clientY+"px";
+  });
+
+  document.querySelectorAll("a,button").forEach(element=>{
+    element.addEventListener("mouseenter",()=>{
+      cursorRing.style.width="52px";
+      cursorRing.style.height="52px";
+    });
+    element.addEventListener("mouseleave",()=>{
+      cursorRing.style.width="35px";
+      cursorRing.style.height="35px";
+    });
+  });
+}
+
+document.getElementById("bookingForm").addEventListener("submit",event=>{
+  event.preventDefault();
+  document.getElementById("formSuccess").hidden=false;
+  event.target.reset();
+});
+
+document.getElementById("year").textContent=new Date().getFullYear();
+</script>
+
+</body>
+</html>
