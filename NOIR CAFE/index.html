@@ -1,0 +1,757 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#171512">
+<title>NOIR — Coffee, Considered.</title>
+<meta name="description" content="NOIR Cafe — An elevated coffee experience, thoughtfully crafted.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --black:#171512;
+  --dark:#201d18;
+  --panel:#28231d;
+  --copper:#bd8758;
+  --copper-light:#d8ae83;
+  --cream:#eee5d8;
+  --muted:#a49a8d;
+  --line:rgba(216,174,131,.19);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  background:var(--black);color:var(--cream);
+  font-family:"DM Sans",sans-serif;overflow-x:hidden
+}
+a{text-decoration:none;color:inherit}
+button{font:inherit}
+
+.preloader{
+  position:fixed;inset:0;background:var(--black);z-index:9999;
+  display:grid;place-items:center;transition:opacity .8s,visibility .8s
+}
+.preloader.hide{opacity:0;visibility:hidden}
+.preloader-content{text-align:center}
+.preloader-content h1{
+  font-family:"Playfair Display",serif;font-size:55px;
+  font-weight:400;letter-spacing:9px;color:var(--copper)
+}
+.preloader-content p{font-size:8px;letter-spacing:5px;color:var(--muted);margin-top:12px}
+
+.cursor,.cursor-ring{
+  position:fixed;pointer-events:none;border-radius:50%;
+  transform:translate(-50%,-50%);z-index:9998
+}
+.cursor{width:6px;height:6px;background:var(--copper)}
+.cursor-ring{width:34px;height:34px;border:1px solid rgba(189,135,88,.5);transition:width .3s,height .3s}
+
+.header{
+  position:fixed;top:0;left:0;width:100%;height:94px;
+  padding:0 7%;display:flex;align-items:center;
+  justify-content:space-between;z-index:100;
+  border-bottom:1px solid transparent;transition:.4s
+}
+.header.scrolled{
+  height:76px;background:rgba(23,21,18,.92);
+  backdrop-filter:blur(18px);border-color:var(--line)
+}
+.logo{
+  font-family:"Playfair Display",serif;font-size:27px;
+  letter-spacing:5px;color:var(--cream)
+}
+.logo span{color:var(--copper)}
+.logo small{
+  display:block;font-family:"DM Sans",sans-serif;
+  font-size:7px;letter-spacing:4px;text-align:center;
+  color:var(--muted);margin-top:3px
+}
+.nav{display:flex;align-items:center;gap:36px}
+.nav a{font-size:9px;letter-spacing:2px;color:#c0b7a9;transition:.3s}
+.nav a:hover{color:var(--copper-light)}
+.nav .nav-button{
+  border:1px solid var(--copper);padding:14px 21px;color:var(--cream)
+}
+.nav .nav-button:hover{background:var(--copper);color:var(--black)}
+.menu-toggle{display:none;background:none;border:0;color:var(--cream);font-size:25px}
+
+.hero{
+  min-height:100vh;display:grid;grid-template-columns:1fr 1fr;
+  align-items:center;gap:60px;padding:150px 7% 75px;
+  position:relative;overflow:hidden
+}
+.hero::before{
+  content:"";position:absolute;width:500px;height:500px;
+  border-radius:50%;background:rgba(189,135,88,.06);
+  filter:blur(100px);top:10%;left:-200px
+}
+.hero-content{position:relative;z-index:2}
+.eyebrow{
+  display:flex;align-items:center;gap:13px;
+  font-size:9px;letter-spacing:4px;color:var(--copper-light);
+  margin-bottom:29px
+}
+.eyebrow span{width:35px;height:1px;background:var(--copper)}
+.hero h1{
+  font-family:"Playfair Display",serif;
+  font-size:clamp(58px,7vw,100px);line-height:1.02;
+  font-weight:400;letter-spacing:-2px
+}
+.hero h1 em{color:var(--copper);font-weight:400}
+.hero-description{
+  max-width:430px;font-size:12px;line-height:2.1;
+  color:var(--muted);margin-top:28px
+}
+.hero-actions{display:flex;align-items:center;gap:30px;margin-top:38px}
+.button{
+  display:inline-flex;align-items:center;gap:27px;
+  padding:17px 23px;background:var(--copper);color:var(--black);
+  font-size:9px;letter-spacing:2px;font-weight:600;
+  transition:transform .35s,background .35s,color .35s
+}
+.button:hover{transform:translateY(-5px);background:var(--copper-light)}
+.text-link{font-size:9px;letter-spacing:2px;color:var(--cream)}
+.text-link span{color:var(--copper);margin-left:8px}
+.hero-meta{
+  display:flex;gap:30px;border-top:1px solid var(--line);
+  padding-top:22px;margin-top:75px;
+  font-size:8px;letter-spacing:2px;color:var(--muted)
+}
+
+.hero-visual{height:570px;position:relative}
+.hero-image{
+  position:absolute;inset:15px 0 15px 35px;overflow:hidden
+}
+.hero-image img{
+  width:100%;height:100%;object-fit:cover;
+  filter:brightness(.72) saturate(.75);transition:transform 1s
+}
+.hero-visual:hover .hero-image img{transform:scale(1.045)}
+.hero-image::after{
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(0deg,rgba(15,12,9,.7),transparent 65%)
+}
+.hero-outline{
+  position:absolute;inset:0;border:1px solid var(--copper);
+  transform:translate(17px,17px);pointer-events:none
+}
+.hero-caption{
+  position:absolute;bottom:43px;left:65px;z-index:2;
+  font-size:8px;letter-spacing:4px;color:var(--copper-light)
+}
+.hero-caption strong{
+  display:block;font-family:"Playfair Display",serif;
+  font-size:31px;font-weight:400;letter-spacing:0;
+  color:var(--cream);margin-top:10px
+}
+.hero-number{
+  position:absolute;top:0;left:0;width:100px;height:100px;
+  background:var(--copper);color:var(--black);
+  display:grid;place-items:center;z-index:3;
+  font-family:"Playfair Display",serif;font-size:37px
+}
+
+.marquee{
+  overflow:hidden;background:var(--copper);color:var(--black);
+  padding:19px 0;white-space:nowrap
+}
+.marquee-track{display:flex;width:max-content;animation:marquee 28s linear infinite}
+.marquee-track span{
+  padding:0 35px;font-family:"Playfair Display",serif;
+  font-size:15px;letter-spacing:3px
+}
+@keyframes marquee{to{transform:translateX(-50%)}}
+
+.section{padding:125px 7%}
+.section-label{
+  font-size:8px;letter-spacing:4px;color:var(--copper);
+  margin-bottom:25px
+}
+.section-heading{
+  display:flex;justify-content:space-between;
+  align-items:end;gap:40px;margin-bottom:60px
+}
+.section-heading h2{
+  font-family:"Playfair Display",serif;
+  font-size:clamp(42px,5vw,68px);
+  font-weight:400;line-height:1.15
+}
+.section-heading h2 em{color:var(--copper);font-weight:400}
+.section-heading>p{
+  max-width:330px;font-size:11px;line-height:2;color:var(--muted)
+}
+
+.story-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:90px;align-items:center
+}
+.story-image{height:510px;position:relative}
+.story-image img{
+  width:100%;height:100%;object-fit:cover;
+  filter:brightness(.8) saturate(.7);transition:transform .8s
+}
+.story-image:hover img{transform:scale(1.025)}
+.story-image::after{
+  content:"";position:absolute;inset:17px -17px -17px 17px;
+  border:1px solid var(--copper);z-index:-1
+}
+.story-copy h2{
+  font-family:"Playfair Display",serif;font-size:clamp(40px,5vw,64px);
+  font-weight:400;line-height:1.17
+}
+.story-copy h2 em{color:var(--copper)}
+.story-copy>p{
+  color:var(--muted);font-size:12px;line-height:2.1;
+  margin-top:25px;max-width:430px
+}
+.story-stats{
+  display:flex;gap:50px;border-top:1px solid var(--line);
+  margin-top:40px;padding-top:25px
+}
+.story-stats strong{
+  display:block;font-family:"Playfair Display",serif;
+  font-size:29px;font-weight:400;color:var(--copper-light)
+}
+.story-stats small{display:block;font-size:8px;letter-spacing:2px;color:var(--muted);margin-top:8px}
+
+.menu-section{background:var(--dark)}
+.menu-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px}
+.menu-card{
+  background:var(--black);border:1px solid var(--line);
+  padding:32px;position:relative;overflow:hidden;
+  transition:transform .45s,border-color .45s,background .45s
+}
+.menu-card::after{
+  content:"";position:absolute;right:-80px;bottom:-100px;
+  width:180px;height:180px;border:1px solid rgba(189,135,88,.13);
+  border-radius:50%;transition:transform .6s
+}
+.menu-card:hover{
+  transform:translateY(-8px);border-color:var(--copper);
+  background:#211c16
+}
+.menu-card:hover::after{transform:scale(1.4)}
+.menu-card-top{display:flex;justify-content:space-between;align-items:center}
+.menu-card-top span{font-size:8px;letter-spacing:3px;color:var(--copper)}
+.menu-symbol{
+  width:50px;height:50px;border:1px solid var(--line);
+  display:grid;place-items:center;color:var(--copper);
+  font-family:"Playfair Display",serif;font-size:22px
+}
+.menu-card h3{
+  font-family:"Playfair Display",serif;font-size:29px;
+  font-weight:400;margin-top:35px
+}
+.menu-card p{font-size:10px;color:var(--muted);margin-top:10px;line-height:1.8}
+.menu-card-bottom{
+  display:flex;justify-content:space-between;align-items:center;
+  margin-top:28px;padding-top:18px;border-top:1px solid var(--line)
+}
+.menu-card-bottom strong{font-size:13px;color:var(--copper-light);font-weight:500}
+.menu-card-bottom span{font-size:9px;letter-spacing:2px;color:var(--muted)}
+.menu-note{font-size:9px;color:var(--muted);margin-top:25px}
+
+.feature{
+  display:grid;grid-template-columns:1fr 1fr;
+  min-height:580px
+}
+.feature-image{overflow:hidden}
+.feature-image img{
+  width:100%;height:100%;min-height:580px;object-fit:cover;
+  filter:brightness(.65) saturate(.65);transition:transform 1s
+}
+.feature-image:hover img{transform:scale(1.04)}
+.feature-content{
+  background:#302820;padding:90px 12%;
+  display:flex;flex-direction:column;justify-content:center
+}
+.feature-content h2{
+  font-family:"Playfair Display",serif;
+  font-size:clamp(42px,5vw,67px);font-weight:400;line-height:1.15
+}
+.feature-content h2 em{color:var(--copper-light)}
+.feature-content p{
+  font-size:11px;line-height:2;color:#b6aa9c;
+  margin-top:25px;max-width:390px
+}
+.feature-content .button{align-self:flex-start;margin-top:35px}
+
+.gallery-grid{
+  display:grid;grid-template-columns:1.2fr .8fr .8fr;
+  grid-template-rows:260px 260px;gap:14px
+}
+.gallery-item{overflow:hidden;position:relative}
+.gallery-item:first-child{grid-row:span 2}
+.gallery-item img{
+  width:100%;height:100%;object-fit:cover;
+  filter:brightness(.75) saturate(.7);
+  transition:transform .8s,filter .8s
+}
+.gallery-item:hover img{transform:scale(1.07);filter:brightness(.95) saturate(.9)}
+.gallery-item span{
+  position:absolute;bottom:20px;left:20px;
+  font-size:8px;letter-spacing:3px;color:white
+}
+
+.visit-section{background:var(--dark)}
+.visit-grid{display:grid;grid-template-columns:1fr 1fr;gap:90px}
+.visit-copy h2{
+  font-family:"Playfair Display",serif;font-size:clamp(43px,5vw,66px);
+  font-weight:400;line-height:1.16
+}
+.visit-copy h2 em{color:var(--copper)}
+.visit-copy>p{font-size:11px;line-height:2;color:var(--muted);margin-top:22px;max-width:400px}
+.visit-detail{
+  display:flex;align-items:center;gap:18px;
+  margin-top:35px;padding-top:22px;border-top:1px solid var(--line)
+}
+.visit-detail>span{font-family:"Playfair Display",serif;font-size:25px;color:var(--copper)}
+.visit-detail strong{font-size:11px;font-weight:500;display:block}
+.visit-detail small{font-size:9px;color:var(--muted);display:block;margin-top:6px}
+.visit-form{display:flex;flex-direction:column;gap:12px}
+.visit-form label{font-size:8px;letter-spacing:2px;color:var(--copper-light);margin-top:12px}
+.visit-form input,.visit-form select,.visit-form textarea{
+  width:100%;padding:14px 0;background:transparent;
+  border:0;border-bottom:1px solid var(--line);
+  outline:none;color:var(--cream);font-size:11px
+}
+.visit-form input:focus,.visit-form select:focus,.visit-form textarea:focus{border-color:var(--copper)}
+.visit-form select option{background:var(--dark)}
+.visit-form textarea{resize:vertical}
+.visit-form .button{border:0;align-self:flex-start;margin-top:18px;cursor:pointer}
+.form-success{font-size:10px;color:var(--copper-light);line-height:1.7}
+.demo-note{font-size:9px;color:var(--muted);line-height:1.8;margin-top:17px}
+
+.final-cta{
+  text-align:center;padding:130px 7%;
+  background:linear-gradient(rgba(20,17,13,.82),rgba(20,17,13,.9)),
+  url("https://images.unsplash.com/photo-1442512595331-e89e73853f31?w=1600&q=85") center/cover
+}
+.final-cta>p{font-size:8px;letter-spacing:5px;color:var(--copper-light)}
+.final-cta h2{
+  font-family:"Playfair Display",serif;font-size:clamp(45px,6vw,82px);
+  font-weight:400;line-height:1.15;margin:30px 0
+}
+.final-cta h2 em{color:var(--copper-light)}
+.final-cta .button{margin-top:10px}
+
+.footer{padding:55px 7% 25px;background:#110f0d}
+.footer-main{
+  display:flex;align-items:center;justify-content:space-between;
+  padding-bottom:45px
+}
+.footer-main>p{font-size:8px;letter-spacing:3px;color:var(--muted)}
+.footer-bottom{
+  display:flex;justify-content:space-between;gap:20px;
+  padding-top:22px;border-top:1px solid var(--line);
+  font-size:8px;letter-spacing:2px;color:#82796e
+}
+.back-top{font-size:9px;letter-spacing:2px;color:var(--copper-light)}
+.floating-contact{
+  position:fixed;bottom:25px;right:25px;width:49px;height:49px;
+  display:grid;place-items:center;background:var(--copper);
+  color:var(--black);border-radius:50%;z-index:90;
+  font-size:19px;transition:transform .3s
+}
+.floating-contact:hover{transform:translateY(-5px) rotate(45deg)}
+
+.reveal{opacity:0;transform:translateY(30px);transition:opacity .9s,transform .9s}
+.reveal.visible{opacity:1;transform:translateY(0)}
+
+@media(max-width:850px){
+  .header{padding:0 5%}
+  .nav{gap:20px}
+  .hero{padding-left:5%;padding-right:5%;gap:35px}
+  .hero-visual{height:460px}
+  .section{padding:95px 5%}
+  .story-grid,.visit-grid{gap:45px}
+  .feature-content{padding:65px 9%}
+}
+@media(max-width:650px){
+  .cursor,.cursor-ring{display:none}
+  .header{height:76px;padding:0 6%}
+  .menu-toggle{display:block}
+  .nav{
+    display:none;position:absolute;top:75px;left:0;width:100%;
+    background:var(--black);padding:30px 7%;
+    flex-direction:column;align-items:flex-start;
+    border-bottom:1px solid var(--line)
+  }
+  .nav.open{display:flex}
+  .nav a{font-size:11px}
+  .hero{grid-template-columns:1fr;padding:130px 6% 65px;gap:45px}
+  .hero h1{font-size:65px}
+  .hero-visual{height:400px}
+  .hero-meta{margin-top:45px;flex-wrap:wrap}
+  .section{padding:85px 6%}
+  .story-grid,.visit-grid{grid-template-columns:1fr;gap:55px}
+  .story-image{height:370px}
+  .section-heading{display:block}
+  .section-heading>p{margin-top:18px}
+  .menu-grid{grid-template-columns:1fr}
+  .feature{grid-template-columns:1fr}
+  .feature-image img{min-height:370px;height:370px}
+  .feature-content{padding:75px 8%}
+  .gallery-grid{grid-template-columns:1fr 1fr;grid-template-rows:260px 190px 190px}
+  .gallery-item:first-child{grid-column:span 2;grid-row:auto}
+  .final-cta{padding:95px 6%}
+  .footer-main{align-items:flex-start;flex-direction:column;gap:25px}
+  .footer-bottom{flex-direction:column}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;transition-duration:.01ms!important}
+}
+</style>
+</head>
+
+<body>
+
+<div class="preloader" id="preloader">
+  <div class="preloader-content">
+    <h1>NOIR</h1>
+    <p>COFFEE, CONSIDERED.</p>
+  </div>
+</div>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<header class="header" id="header">
+  <a href="#" class="logo">NOIR<span>.</span><small>COFFEE HOUSE</small></a>
+
+  <nav class="nav" id="nav">
+    <a href="#story">OUR STORY</a>
+    <a href="#menu">THE MENU</a>
+    <a href="#experience">EXPERIENCE</a>
+    <a href="#visit">FIND US</a>
+    <a href="#visit" class="nav-button">RESERVE A TABLE ↗</a>
+  </nav>
+
+  <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation">☰</button>
+</header>
+
+<main>
+
+<section class="hero">
+  <div class="hero-content reveal">
+    <div class="eyebrow"><span></span> THE ART OF SLOWING DOWN</div>
+
+    <h1>Good coffee.<br>Great <em>moments.</em></h1>
+
+    <p class="hero-description">
+      A little escape from the everyday. Thoughtfully sourced coffee,
+      carefully crafted flavours and an atmosphere worth staying for.
+    </p>
+
+    <div class="hero-actions">
+      <a href="#menu" class="button">EXPLORE THE MENU <span>↗</span></a>
+      <a href="#story" class="text-link">OUR STORY <span>↓</span></a>
+    </div>
+
+    <div class="hero-meta">
+      <span>EST. WITH PASSION</span>
+      <span>COFFEE · CULTURE · CONNECTION</span>
+    </div>
+  </div>
+
+  <div class="hero-visual reveal">
+    <div class="hero-image">
+      <img src="https://images.unsplash.com/photo-1442512595331-e89e73853f31?w=1100&q=90" alt="Freshly brewed coffee in a warm cafe">
+    </div>
+    <div class="hero-outline"></div>
+    <div class="hero-number">N.</div>
+    <div class="hero-caption">A PLACE TO PAUSE<strong>Stay a little longer.</strong></div>
+  </div>
+</section>
+
+<div class="marquee">
+  <div class="marquee-track">
+    <span>COFFEE, CONSIDERED.</span><span>✳</span>
+    <span>GOOD TASTE TAKES TIME.</span><span>✳</span>
+    <span>MADE FOR THE MOMENT.</span><span>✳</span>
+    <span>COFFEE, CONSIDERED.</span><span>✳</span>
+    <span>GOOD TASTE TAKES TIME.</span><span>✳</span>
+    <span>MADE FOR THE MOMENT.</span><span>✳</span>
+  </div>
+</div>
+
+<section class="section" id="story">
+  <div class="story-grid">
+    <div class="story-image reveal">
+      <img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=1000&q=85" alt="Coffee being prepared by a barista">
+    </div>
+
+    <div class="story-copy reveal">
+      <div class="section-label">01 — OUR STORY</div>
+      <h2>More than a cup.<br><em>A state of mind.</em></h2>
+
+      <p>
+        NOIR is built around a simple idea: the best moments deserve
+        better coffee. From the first aroma to the final sip, we
+        believe every detail should feel intentional.
+      </p>
+
+      <p>
+        Come for the coffee. Stay for the atmosphere. Leave with
+        a reason to return.
+      </p>
+
+      <div class="story-stats">
+        <div><strong>01</strong><small>OUR PHILOSOPHY</small></div>
+        <div><strong>∞</strong><small>WAYS TO ENJOY</small></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section menu-section" id="menu">
+  <div class="section-label reveal">02 — THE MENU</div>
+
+  <div class="section-heading">
+    <h2 class="reveal">Crafted with care.<br><em>Served with character.</em></h2>
+    <p class="reveal">
+      From familiar favourites to something new, discover a menu
+      made for every kind of coffee moment.
+    </p>
+  </div>
+
+  <div class="menu-grid">
+
+    <article class="menu-card reveal">
+      <div class="menu-card-top"><span>01 — THE CLASSICS</span><div class="menu-symbol">N.</div></div>
+      <h3>NOIR Cappuccino</h3>
+      <p>Rich espresso with beautifully textured milk and a delicate finish.</p>
+      <div class="menu-card-bottom"><strong>₹210 — ₹250</strong><span>HOUSE FAVOURITE</span></div>
+    </article>
+
+    <article class="menu-card reveal">
+      <div class="menu-card-top"><span>02 — THE ESSENTIALS</span><div class="menu-symbol">◉</div></div>
+      <h3>Velvet Latte</h3>
+      <p>Silky milk, balanced espresso and a smooth, comforting finish.</p>
+      <div class="menu-card-bottom"><strong>₹220 — ₹270</strong><span>SMOOTH & RICH</span></div>
+    </article>
+
+    <article class="menu-card reveal">
+      <div class="menu-card-top"><span>03 — THE COLD COLLECTION</span><div class="menu-symbol">❄</div></div>
+      <h3>Midnight Cold Brew</h3>
+      <p>Slow-steeped coffee with deep notes and a refreshing character.</p>
+      <div class="menu-card-bottom"><strong>₹240 — ₹290</strong><span>CHILLED PERFECTION</span></div>
+    </article>
+
+    <article class="menu-card reveal">
+      <div class="menu-card-top"><span>04 — SOMETHING SWEET</span><div class="menu-symbol">✳</div></div>
+      <h3>Mocha Indulgence</h3>
+      <p>A thoughtful meeting of espresso, chocolate and creamy milk.</p>
+      <div class="menu-card-bottom"><strong>₹250 — ₹310</strong><span>RICH & COMFORTING</span></div>
+    </article>
+
+  </div>
+
+  <p class="menu-note">Concept menu and indicative demonstration prices. Actual offerings and prices may vary.</p>
+</section>
+
+<section class="feature" id="experience">
+  <div class="feature-image">
+    <img src="https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=1200&q=85" alt="Warm and inviting cafe interior">
+  </div>
+
+  <div class="feature-content reveal">
+    <div class="section-label">03 — THE NOIR EXPERIENCE</div>
+    <h2>Some places<br>just <em>feel right.</em></h2>
+    <p>
+      Warm lighting. Thoughtful details. The gentle hum of conversation.
+      NOIR is a place to catch up, get inspired or simply enjoy
+      a moment to yourself.
+    </p>
+    <a href="#visit" class="button">COME EXPERIENCE IT <span>↗</span></a>
+  </div>
+</section>
+
+<section class="section" id="gallery">
+  <div class="section-label reveal">04 — A GLIMPSE OF NOIR</div>
+  <div class="section-heading">
+    <h2 class="reveal">The little things<br><em>make the moment.</em></h2>
+    <p class="reveal">A closer look at the details that make a coffee break special.</p>
+  </div>
+
+  <div class="gallery-grid">
+    <div class="gallery-item reveal">
+      <img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=900&q=85" alt="Coffee preparation">
+      <span>THE CRAFT</span>
+    </div>
+    <div class="gallery-item reveal">
+      <img src="https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=800&q=85" alt="Fresh coffee">
+      <span>THE POUR</span>
+    </div>
+    <div class="gallery-item reveal">
+      <img src="https://images.unsplash.com/photo-1511920170033-f8396924c348?w=800&q=85" alt="Coffee cup">
+      <span>THE MOMENT</span>
+    </div>
+    <div class="gallery-item reveal">
+      <img src="https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=800&q=85" alt="Cafe interior">
+      <span>THE SPACE</span>
+    </div>
+    <div class="gallery-item reveal">
+      <img src="https://images.unsplash.com/photo-1445116572660-236099ec97a0?w=800&q=85" alt="Cafe counter">
+      <span>THE EXPERIENCE</span>
+    </div>
+  </div>
+</section>
+
+<section class="section visit-section" id="visit">
+  <div class="visit-grid">
+    <div class="visit-copy reveal">
+      <div class="section-label">05 — FIND YOUR WAY TO NOIR</div>
+      <h2>Your table.<br>Your <em>moment.</em></h2>
+      <p>
+        Planning a coffee date, a catch-up or a quiet afternoon?
+        Send us an enquiry and make room for a little NOIR in your day.
+      </p>
+
+      <div class="visit-detail">
+        <span>⌖</span>
+        <div><strong>FIND US</strong><small>Location to be added by the café owner</small></div>
+      </div>
+
+      <div class="visit-detail">
+        <span>◷</span>
+        <div><strong>OPENING HOURS</strong><small>Hours to be confirmed by the café owner</small></div>
+      </div>
+
+      <div class="visit-detail">
+        <span>✉</span>
+        <div><strong>GET IN TOUCH</strong><small>Contact details to be added</small></div>
+      </div>
+    </div>
+
+    <form class="visit-form reveal" id="visitForm">
+      <label for="guestName">YOUR NAME</label>
+      <input id="guestName" name="name" type="text" placeholder="Full name" required>
+
+      <label for="guestEmail">EMAIL ADDRESS</label>
+      <input id="guestEmail" name="email" type="email" placeholder="you@example.com" required>
+
+      <label for="guests">NUMBER OF GUESTS</label>
+      <select id="guests" name="guests" required>
+        <option value="">Choose guests</option>
+        <option>1 Guest</option>
+        <option>2 Guests</option>
+        <option>3 Guests</option>
+        <option>4 Guests</option>
+        <option>5+ Guests</option>
+      </select>
+
+      <label for="visitMessage">ANY SPECIAL REQUEST?</label>
+      <textarea id="visitMessage" name="message" rows="3" placeholder="Tell us about your visit"></textarea>
+
+      <button type="submit" class="button">SEND ENQUIRY <span>↗</span></button>
+      <p class="form-success" id="formSuccess" hidden>Thank you! This is a demo form. No reservation has been created and no information has been sent.</p>
+      <p class="demo-note">Demonstration only. This form does not transmit or store personal information.</p>
+    </form>
+  </div>
+</section>
+
+<section class="final-cta">
+  <p class="reveal">SOME MOMENTS DESERVE MORE.</p>
+  <h2 class="reveal">Take a break.<br><em>Make it NOIR.</em></h2>
+  <a href="#visit" class="button reveal">PLAN YOUR VISIT <span>↗</span></a>
+</section>
+
+</main>
+
+<footer class="footer">
+  <div class="footer-main">
+    <a href="#" class="logo">NOIR<span>.</span><small>COFFEE HOUSE</small></a>
+    <p>COFFEE, CULTURE & CONNECTION.</p>
+    <a href="#" class="back-top">BACK TO TOP ↑</a>
+  </div>
+
+  <div class="footer-bottom">
+    <span>© <span id="year"></span> NOIR CAFÉ — CONCEPT DEMO</span>
+    <span>DESIGNED WITH INTENTION.</span>
+  </div>
+</footer>
+
+<a href="#visit" class="floating-contact" aria-label="Contact NOIR">↗</a>
+
+<script>
+const preloader=document.getElementById("preloader");
+
+window.addEventListener("load",()=>{
+  setTimeout(()=>preloader.classList.add("hide"),450);
+});
+
+setTimeout(()=>preloader.classList.add("hide"),3000);
+
+const header=document.getElementById("header");
+
+window.addEventListener("scroll",()=>{
+  header.classList.toggle("scrolled",window.scrollY>40);
+});
+
+const menuToggle=document.getElementById("menuToggle");
+const nav=document.getElementById("nav");
+
+menuToggle.addEventListener("click",()=>{
+  nav.classList.toggle("open");
+  menuToggle.textContent=nav.classList.contains("open")?"×":"☰";
+});
+
+nav.querySelectorAll("a").forEach(link=>{
+  link.addEventListener("click",()=>{
+    nav.classList.remove("open");
+    menuToggle.textContent="☰";
+  });
+});
+
+const observer=new IntersectionObserver(entries=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting){
+      entry.target.classList.add("visible");
+      observer.unobserve(entry.target);
+    }
+  });
+},{threshold:.12});
+
+document.querySelectorAll(".reveal").forEach(element=>{
+  observer.observe(element);
+});
+
+const cursor=document.getElementById("cursor");
+const cursorRing=document.getElementById("cursorRing");
+
+if(window.matchMedia("(pointer:fine)").matches){
+  window.addEventListener("mousemove",event=>{
+    cursor.style.left=event.clientX+"px";
+    cursor.style.top=event.clientY+"px";
+    cursorRing.style.left=event.clientX+"px";
+    cursorRing.style.top=event.clientY+"px";
+  });
+
+  document.querySelectorAll("a,button").forEach(element=>{
+    element.addEventListener("mouseenter",()=>{
+      cursorRing.style.width="52px";
+      cursorRing.style.height="52px";
+    });
+    element.addEventListener("mouseleave",()=>{
+      cursorRing.style.width="34px";
+      cursorRing.style.height="34px";
+    });
+  });
+}
+
+document.getElementById("visitForm").addEventListener("submit",event=>{
+  event.preventDefault();
+  document.getElementById("formSuccess").hidden=false;
+  event.target.reset();
+});
+
+document.getElementById("year").textContent=new Date().getFullYear();
+</script>
+
+</body>
+</html>
